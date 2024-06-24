@@ -164,7 +164,7 @@ begin
     ALUi : ALU port map (AIn, BIn, ALUPlus, ALUMinus, ALUOut);  -- ALU Instance
     ALUZero <= '1' when (ALUOut = 0) else
                '0';
-   pc4EX <= IDOut(31 downto 16);  -- EX pc+4
+   pc4EX <= X"0000" & IDOut(31 downto 16);  -- EX pc+4
    addr <= IDOut(57 downto 32);  -- EX addr
    rAEX <= IDOut(127 downto 96);  -- EX rA
 
