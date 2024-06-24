@@ -1,0 +1,80 @@
+m255
+K4
+z2
+!s11e MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/QuartusII/IFID
+Emipsp
+w1719230031
+Z0 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z1 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 0
+Z4 dC:/QuartusII/Assignment5
+8C:/QuartusII/Assignment5/mipsp.vhd
+FC:/QuartusII/Assignment5/mipsp.vhd
+l0
+L7 1
+VRhgbZ3:>SoA787NG=gPnQ3
+!s100 azB4F<>4?83?Y9hA^Ah3>1
+Z5 OV;C;2020.1;71
+32
+!s110 1719231504
+!i10b 1
+Z6 !s108 1719231504.000000
+!s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/QuartusII/Assignment5/mipsp.vhd|
+!s107 C:/QuartusII/Assignment5/mipsp.vhd|
+!i113 1
+Z7 o-work work -2002 -explicit
+Z8 tExplicit 1 CvgOpt 0
+Etestbench
+Z9 w1719228957
+R0
+R1
+R2
+R3
+!i122 1
+R4
+Z10 8C:/QuartusII/Assignment5/test_mipsp.vhd
+Z11 FC:/QuartusII/Assignment5/test_mipsp.vhd
+l0
+L7 1
+V0iZiWY>808JYe:U@XgTPO1
+!s100 zLF8oM6]^BX1[Li>nh2=`2
+R5
+32
+Z12 !s110 1719231505
+!i10b 1
+R6
+Z13 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/QuartusII/Assignment5/test_mipsp.vhd|
+!s107 C:/QuartusII/Assignment5/test_mipsp.vhd|
+!i113 1
+R7
+R8
+Astimulus
+R0
+R1
+R2
+R3
+DEx4 work 9 testbench 0 22 0iZiWY>808JYe:U@XgTPO1
+!i122 1
+l23
+L10 31
+V67=U<9^FDh015Jg:EKDZO1
+!s100 7PY3H5Y]NfS@jiJ60i9RF2
+R5
+32
+R12
+!i10b 1
+R6
+R13
+Z14 !s107 C:/QuartusII/Assignment5/test_mipsp.vhd|
+!i113 1
+R7
+R8
