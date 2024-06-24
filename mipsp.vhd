@@ -133,10 +133,10 @@ begin
     IFID : PR generic map (128) port map (CLK, RESET, IFIn, IFOut);
 
 -- ID : Instruction Decode
---    rsSel <= IFOut(?);  -- rs Select
---    rtSel <= IFOut(?);  -- rt Select
---    Rstd <= ? & ? & ? when (rtSet = '1') else  -- rs, rt, WB.rt
---            ? & ? & ? ;  -- rs, rt, WB.rd
+   rsSel <= IFOut(12);  -- rs Select
+   rtSel <= IFOut(11);  -- rt Select
+   Rstd <= IFOut(57 downto 53) & IFOut(52 downto 48) & MEMOut(52 downto 48) when (rtSet = '1') else  -- rs, rt, WB.rt
+           IFOut(57 downto 53) & IFOut(52 downto 48) & MEMOut(47 downto 43) ;  -- rs, rt, WB.rd
 
     RSel <= rsSel & rtSel;
     RSet <= '1' & '0' & '0' when (rtSet = '1') else  -- rt
@@ -144,56 +144,56 @@ begin
 
     RFi : RF port map (CLK, RESET, Rstd, Rsel, rC, RSet, rA, rB);  -- RF Instance
 
---    IDIn <= ? & ? & ?;  -- rA & rB & IFOut
+   IDIn <= rA & rB & IFOut(63 downto 0);  -- rA & rB & IFOut
     IDEX : PR generic map (128) port map (CLK, RESET, IDIn, IDOut);
 
 -- EX : Execution
---    pc4addrSel <= IDOut(?);  -- pc + 4 + addr Select
---    addrSel <= IDOut(?);  -- addr Selct
---    rASel <= IDOut(?);  -- rAEX Select
---    ALUPlus <= IDOut(?);  -- ALU +
---    ALUMinus <= IDOut(?);  -- ALU -
---    iaSel <= IDOut(?);  -- imm/addr Select
+   pc4addrSel <= IDOut(15);  -- pc + 4 + addr Select
+   addrSel <= IDOut(14);  -- addr Selct
+   rASel <= IDOut(13);  -- rAEX Select
+   ALUPlus <= IDOut(10);  -- ALU +
+   ALUMinus <= IDOut(9);  -- ALU -
+   iaSel <= IDOut(8);  -- imm/addr Select
 
---    imm <= X"FFFF" & IDOut(?) when (IDOut(?) = '1') else  -- imm
---           X"0000" & IDOut(?);  -- 32 bit Signed
+   imm <= X"FFFF" & IDOut(47 downto 32) when (IDOut(47) = '1') else  -- imm
+          X"0000" & IDOut(47 downto 32);  -- 32 bit Signed
 
---    AIn <= IDOut(?);  -- rA
---    BIn <= imm when (iaSel = '1') else  -- Immediate
---           IDOut(?); -- rB
+   AIn <= IDOut(127 downto 96);  -- rA
+   BIn <= imm when (iaSel = '1') else  -- Immediate
+          IDOut(95 downto 64); -- rB
     ALUi : ALU port map (AIn, BIn, ALUPlus, ALUMinus, ALUOut);  -- ALU Instance
     ALUZero <= '1' when (ALUOut = 0) else
                '0';
---    pc4EX <= IDOut(?);  -- EX pc+4
---    addr <= IDOut(?);  -- EX addr
---    rAEX <= IDOut(?);  -- EX rA
+   pc4EX <= IDOut(31 downto 16);  -- EX pc+4
+   addr <= IDOut(57 downto 32);  -- EX addr
+   rAEX <= IDOut(127 downto 96);  -- EX rA
 
---    EXIn <= ? & ?;  -- ALUOut & IDOut
+   EXIn <= ALUOut & IDOut(95 downto 0);  -- ALUOut & IDOut
     EXMEM : PR generic map (128) port map (CLK, RESET, EXIn, EXOut);
 
 -- MEM : Memory
---    MRead <= EXOut(?);   -- Memory Read
---    MWrite <= EXOut(?);   -- Memory Write
+   MRead <= EXOut(7);   -- Memory Read
+   MWrite <= EXOut(6);   -- Memory Write
 
---    DMA <= EXOut(?);  -- ALUOut
---    DMIn <= EXOut(?);  -- rB
+   DMA <= EXOut(127 downto 96);  -- ALUOut
+   DMIn <= EXOut(95 downto 64);  -- rB
     DMi : DM port map (CLK, DMA, DMIn, DMOut, MRead, MWrite);  -- DM Instance
 
---    MEMIn <= ? & ? & ?;  -- ALUOut & DMOut & EXOut
+   MEMIn <= EXOut(127 downto 96) & DMOut & EXOut(63 downto 0);  -- ALUOut & DMOut & EXOut
     MEMWB : PR generic map (128) port map (CLK, RESET, MEMIn, MEMOut);
 
 -- WB : Write Back
---    EXSel <= MEMOut(?);  -- EX Select
---    MEMSel <= MEMOut(?);  -- MEM Select
---    pc4Sel <= MEMOut(?);  -- pc + 4 Select
---    rdSet <= MEMOut(?);  -- rd Set
---    rtSet <= MEMOut(?);  -- rt Set
---    r31Set <= MEMOut(?);  -- r31 Set
---    pc4WB <= MEMOut(?);  -- WB pc + 4 Return Address
+   EXSel <= MEMOut(5);  -- EX Select
+   MEMSel <= MEMOut(4);  -- MEM Select
+   pc4Sel <= MEMOut(3);  -- pc + 4 Select
+   rdSet <= MEMOut(2);  -- rd Set
+   rtSet <= MEMOut(1);  -- rt Set
+   r31Set <= MEMOut(0);  -- r31 Set
+   pc4WB <= X"0000" & MEMOut(31 downto 16);  -- WB pc + 4 Return Address
 
---    rC <= MEMOut(?) when (EXSel = '1') else  -- ALUout
---          MEMOut(?) when (MEMSel = '1') else  -- DMOut
---          pc4WB when (pc4Sel = '1') else  -- pc + 4
---          (others => '0');
+   rC <= MEMOut(127 downto 96) when (EXSel = '1') else  -- ALUout
+         MEMOut(95 downto 64) when (MEMSel = '1') else  -- DMOut
+         pc4WB when (pc4Sel = '1') else  -- pc + 4
+         (others => '0');
 
 end RTL;
